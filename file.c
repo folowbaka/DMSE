@@ -8,7 +8,7 @@ Passager* new_Passager(int id,int stationD,int stationA,int tpae,int transfert,i
     p->tpae=tpae;
     p->transfert=transfert;
     p->tpmax=tpmax;
-
+    p->next=NULL;
     return p;
 
 }
@@ -24,4 +24,35 @@ void Passager_free(Passager *p)
 FilePassager* new_FilePassager()
 {
     return calloc(1,sizeof(FilePassager));
+}
+void addPassager(FilePassager* fp,Passager* p)
+{
+    if(fp!=NULL)
+    {
+        if(fp->tailleFIle==0 && fp->pqueue==NULL && fp->ptete==NULL)
+        {
+            fp->pqueue=p;fp->ptete=p;
+        }
+        else
+        {
+            p->next=fp->pqueue;
+            fp->pqueue=p;
+        }
+        fp->tailleFIle++;
+    }
+
+}
+void afficheFilePassager(FilePassager* fl)
+{
+    if(fl!=NULL)
+    {
+        Passager* actuel =fl->pqueue;
+        while(actuel!=NULL)
+        {
+            affichePassager(actuel);
+            actuel=actuel->next;
+        }
+
+    }
+
 }

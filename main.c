@@ -1,5 +1,5 @@
 #include "file.h"
-#define NBFILE 10
+#define NBFILE 9
 int main(int argc, const char * argv[])
 {
 
@@ -28,7 +28,27 @@ int main(int argc, const char * argv[])
     while((fscanf(passagers,"# %d %d %d %d %d %d\n",&id,&stationd,&stationa,&temps,&transfert,&tempsmax))!=EOF)
     {
         Passager *p=new_Passager(id,stationd,stationa,temps,transfert,tempsmax);
-        affichePassager(p);
+        if(stationd >0 && stationd<5 || (stationd==0 && stationa<5) || (stationd==5 && stationa>5)||(stationd==6 && stationa<6))
+        {
+            addPassager(fl[stationd],p);
+        }
+        else if(stationd==0 && stationa>=5)
+        {
+            addPassager(fl[5],p);
+        }
+        else if(stationd==5 && stationa<5)
+        {
+            addPassager(fl[0],p);
+        }
+        else if(stationd==6 && stationa>6)
+        {
+            addPassager(fl[7],p);
+        }
+        else if(stationd==7)
+        {
+            addPassager(fl[8],p);
+        }
     }
+    afficheFilePassager(fl[5 ]);
     return 0;
 }
