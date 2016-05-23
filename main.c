@@ -1,4 +1,5 @@
-#include "file.h"
+#include "dmse.h"
+
 int main(int argc, const char * argv[])
 {
 
@@ -48,6 +49,17 @@ int main(int argc, const char * argv[])
     {
         fprintf(stderr, "Erreur de création du tube");
         exit(EXIT_FAILURE);
+    }
+    pthread_t busthread,metrothread;
+    int compteurbus=0;
+    int compteurmetro=5;
+    if(pthread_create(&busthread, NULL, threadbus,compteurbus) == -1) {
+	perror("pthread_create");
+	return EXIT_FAILURE;
+    }
+    if(pthread_create(&metrothread, NULL, threadmetro, compteurmetro) == -1) {
+	perror("pthread_create");
+	return EXIT_FAILURE;
     }
     return 0;
 }

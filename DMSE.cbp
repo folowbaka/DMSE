@@ -32,10 +32,13 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="busmetro.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="dmse.h" />
 		<Unit filename="file.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="file.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>

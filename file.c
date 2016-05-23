@@ -1,4 +1,4 @@
-#include "file.h"
+#include "dmse.h"
 Passager* new_Passager(int id,int stationD,int stationA,int tpae,int transfert,int tpmax)
 {
     Passager* p=malloc(sizeof(Passager));

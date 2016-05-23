@@ -34,3 +34,5 @@ FilePassager* new_FilePassager();
 void Passager_free(Passager *p);
 void addPassager(FilePassager* fp,Passager* p);
 void afficheFilePassager(FilePassager* fl);
+void *threadbus(void *arg);
+void *threadmetro(void *arg);
