@@ -1,6 +1,11 @@
 #include <stdio.h>s
 #include <stdlib.h>
 #include <stdbool.h>
+#include <unistd.h>
+#include <sys/wait.h>
+#include <fcntl.h>
+#include <pthread.h>
+#define NBFILE 9
 
 typedef struct Passager Passager;
 struct Passager

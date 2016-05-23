@@ -1,5 +1,4 @@
 #include "file.h"
-#define NBFILE 9
 int main(int argc, const char * argv[])
 {
 
@@ -28,7 +27,7 @@ int main(int argc, const char * argv[])
     while((fscanf(passagers,"# %d %d %d %d %d %d\n",&id,&stationd,&stationa,&temps,&transfert,&tempsmax))!=EOF)
     {
         Passager *p=new_Passager(id,stationd,stationa,temps,transfert,tempsmax);
-        if(stationd >0 && stationd<5 || (stationd==0 && stationa<5) || (stationd==5 && stationa>5)||(stationd==6 && stationa<6))
+        if(stationd >0 && stationd<5 || (stationd==0 && stationa<5) || (stationd==5 && stationa>5)||(stationd==6 && stationa>6)|| stationa==7)
         {
             addPassager(fl[stationd],p);
         }
@@ -40,15 +39,15 @@ int main(int argc, const char * argv[])
         {
             addPassager(fl[0],p);
         }
-        else if(stationd==6 && stationa>6)
-        {
-            addPassager(fl[7],p);
-        }
-        else if(stationd==7)
+        else if(stationd==6 && stationa<6)
         {
             addPassager(fl[8],p);
         }
     }
-    afficheFilePassager(fl[5 ]);
+    if (mkfifo(("nepnep.fifo"), S_IRWXU | S_IRGRP | S_IWGRP) == -1)
+    {
+        fprintf(stderr, "Erreur de création du tube");
+        exit(EXIT_FAILURE);
+    }
     return 0;
 }
