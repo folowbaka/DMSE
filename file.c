@@ -14,6 +14,7 @@ Passager* new_Passager(int id,int stationD,int stationA,int tpae,int transfert,i
 }
 void affichePassager(Passager* p)
 {
+    if(p!=NULL)
    printf("# %d %d %d %d %d %d\n",p->id,p->stationD,p->stationA,p->tpae,p->transfert,p->tpmax);
 
 }
@@ -113,9 +114,11 @@ void incrementTempsTransfert(FilePassager* fl)
             actuel->tpae++;
             if(actuel->tpae==actuel->tpmax)
             {
-                printf("Temps d'attente maximal atteint\n");
                 Passager* p=popPassagerTaxi(fl,actuel);
+                profit=profit+3;
+                nbPassager--;
                 ecrirePassager(p);
+                usleep(100);
             }
             actuel=actuel->next;
         }

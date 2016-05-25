@@ -27,9 +27,11 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-O2" />
+					<Add option="-pthread" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
+					<Add option="pthread" />
 				</Linker>
 			</Target>
 		</Build>
@@ -44,6 +46,9 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="main.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="taxi.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Extensions>

@@ -36,6 +36,9 @@ typedef struct FilePassager
 
 sem_t evt1,evt2,evt3;
 char* nomTube;
+int profit,compteurbus,compteurmetro;
+bool finProgramme;
+int nbPassager;
 
 Passager* new_Passager(int id,int stationD,int stationA,int tpae,int transfert,int tpmax);
 void affichePassager(Passager* p);
@@ -46,8 +49,10 @@ void addPassager(FilePassager* fp,Passager* p);
 void ecrirePassager(Passager* p);
 void incrementTempsTransfert(FilePassager* fl);
 void afficheFilePassager(FilePassager* fl);
+bool transportVide(Passager **ptransport,int typeTransport);
 void *threadbus(void *arg);
 void *threadmetro(void *arg);
 void *threadVerif(void *fl);
+void *threadTaxi(void *fl);
 void debarquement(Passager** ptransport,int typeTransport,int station,FilePassager** fl);
 void embarquement(Passager** ptransport,int typeTransport,int station,FilePassager** fl);
