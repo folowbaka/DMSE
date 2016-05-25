@@ -89,7 +89,7 @@ void embarquement(Passager** ptransport,int typeTransport,int station,FilePassag
                 {
                     ptransport[i]=popPassager(fl[station]);
                     printf("metro : embarque le passager {%d}\n",ptransport[i]->id);
-                    profit++
+                    profit++;
                 }
             break;
 
@@ -118,7 +118,8 @@ void *threadbus(void *fl)
         {
             sem_wait(&evt1);
         }
-        printf(" bus station : %d \n",compteurbus);
+        printf(" ______________________\n|,----.,----.,----.,--.\\ \n||    ||    ||    ||   \\\\ \n|`----'`----'|----||----\\`. \n[            |   -||- __|(| \n[  ,--.      |____||.--.  |\n=-(( `))-----------(( `))==\n   `--'             `--'\n");
+         printf("bus station : %d \n",compteurbus);
         debarquement(pbus,BUS,compteurbus,fl);
         embarquement(pbus,BUS,compteurbus,fl);
         for(i=0;i<CAPBUS;i++)
@@ -136,6 +137,7 @@ int i;
     Passager** pmetro=(Passager**)malloc(CAPMETRO*sizeof(Passager*));
     while(!finProgramme)
     {
+        printf("_________\n|  _  |    __\n| | | |____\\/_\n| |_| |       \\ \n| __  |  _  _  |\n|/  \\_|_/ \\/ \\/\n \\__/   \\_/\\_/\n");
         printf("Metro station : %d \n",compteurmetro);
         debarquement(pmetro,METRO,compteurmetro,fl);
         embarquement(pmetro,METRO,compteurmetro,fl);

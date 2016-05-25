@@ -85,8 +85,9 @@ int main(int argc, const char * argv[])
         if (pthread_join(verifthread, NULL)) {
         perror("pthread_join");
         return EXIT_FAILURE;
-        printf("Fin du programme,Profit : %d\n",profit);
         }
+        kill(pid,SIGTERM);
+        printf("Fin du programme, Profit : %d$\n",profit);
     }
     else
     {
