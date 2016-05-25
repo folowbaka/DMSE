@@ -25,11 +25,15 @@ FilePassager* new_FilePassager()
 {
     return calloc(1,sizeof(FilePassager));
 }
+bool FilePassagerVide(FilePassager* fl)
+{
+    return fl->tailleFIle==0;
+}
 void addPassager(FilePassager* fp,Passager* p)
 {
     if(fp!=NULL)
     {
-        if(fp->tailleFIle==0 && fp->pqueue==NULL && fp->ptete==NULL)
+        if(FilePassagerVide(fp))
         {
             fp->pqueue=p;fp->ptete=p;
         }
@@ -39,6 +43,71 @@ void addPassager(FilePassager* fp,Passager* p)
             fp->pqueue=p;
         }
         fp->tailleFIle++;
+    }
+
+}
+Passager* popPassager(FilePassager* fp)
+{
+    Passager* pr=NULL;
+    if(!FilePassagerVide(fp))
+    {
+        if(fp->tailleFIle==1 && fp->pqueue==fp->ptete)
+        {
+            pr=fp->pqueue;
+            fp->pqueue=NULL;
+            fp->ptete=NULL;
+        }
+        else
+        {
+            Passager* p=fp->pqueue;
+            while(p!=NULL && p->next!=fp->ptete)
+            {
+                p=p->next;
+            }
+            Passager* pr=fp->ptete;
+            fp->ptete=p;fp->ptete->next=NULL;
+        }
+        fp->tailleFIle--;
+    }
+    return pr;
+}
+Passager* popPassagerTaxi(FilePassager* fp,Passager* p)
+{
+      Passager* pr=NULL;
+    if(!FilePassagerVide(fp))
+    {
+        if(fp->tailleFIle==1 && fp->pqueue==fp->ptete)
+        {
+            pr=fp->pqueue;
+            fp->pqueue=NULL;
+            fp->ptete=NULL;
+        }
+        else
+        {
+            Passager* ps=fp->pqueue;
+            while(p!=NULL && p->next!=p)
+            {
+                p=p->next;
+            }
+            Passager* pr=NULL;
+            fp->ptete=p;fp->ptete->next=NULL;
+        }
+        fp->tailleFIle--;
+    }
+    return pr;
+
+}
+void incrementTempsTransfert(FilePassager *fl)
+{
+         if(fl!=NULL)
+    {
+        Passager* actuel =fl->pqueue;
+        while(actuel!=NULL)
+        {
+            actuel->tpae++;
+            actuel=actuel->next;
+        }
+
     }
 
 }

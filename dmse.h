@@ -34,13 +34,18 @@ typedef struct FilePassager
 
 }FilePassager;
 
-sem_t evt1;
-sem_t evt2;
+sem_t evt1,evt2,evt3;
+
 Passager* new_Passager(int id,int stationD,int stationA,int tpae,int transfert,int tpmax);
 void affichePassager(Passager* p);
 FilePassager* new_FilePassager();
 void Passager_free(Passager *p);
+bool FilePassagerVide(FilePassager* fl);
 void addPassager(FilePassager* fp,Passager* p);
+void incrementTempsTransfert(FilePassager *fl);
 void afficheFilePassager(FilePassager* fl);
 void *threadbus(void *arg);
 void *threadmetro(void *arg);
+void *threadVerif(void *fl);
+void debarquement(Passager** ptransport,int typeTransport,int station,FilePassager** fl);
+void embarquement(Passager** ptransport,int typeTransport,int station,FilePassager** fl);
