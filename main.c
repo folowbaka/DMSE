@@ -16,6 +16,9 @@ int main(int argc, const char * argv[])
     }
     int nbPassager=0;
     int id,stationd,stationa,temps,transfert,tempsmax;
+    pid_t pid;
+    nomTube=(char*)malloc(sizeof("nepnep.fifo"));
+    nomTube="nepnep.fifo";
     FilePassager **fl=(FilePassager**)malloc(NBFILE*sizeof(FilePassager*));
     int i;
     for(i=0;i<NBFILE;i++)
@@ -44,38 +47,46 @@ int main(int argc, const char * argv[])
             addPassager(fl[8],p);
         }
     }
-    if (mkfifo(("nepnep.fifo"), S_IRWXU | S_IRGRP | S_IWGRP) == -1)
+    pid=fork();
+    if(pid>0)
     {
+        if (mkfifo((nomTube), S_IRWXU | S_IRGRP | S_IWGRP) == -1)
+        {
         fprintf(stderr, "Erreur de création du tube\n");
         //exit(EXIT_FAILURE);
+        }
+        pthread_t busthread,metrothread,verifthread;
+        sem_init(&evt1,0,0);
+        sem_init(&evt2,0,0);
+        sem_init(&evt3,0,0);
+        if(pthread_create(&busthread, NULL, threadbus,fl) == -1) {
+        perror("pthread_create");
+        return EXIT_FAILURE;
+        }
+        if(pthread_create(&metrothread, NULL, threadmetro,fl) == -1) {
+        perror("pthread_create");
+        return EXIT_FAILURE;
+        }
+        if(pthread_create(&verifthread, NULL, threadVerif,fl) == -1) {
+        perror("pthread_create");
+        return EXIT_FAILURE;
+        }
+        if (pthread_join(busthread, NULL)) {
+        perror("pthread_join");
+        return EXIT_FAILURE;
+        }
+        if (pthread_join(metrothread, NULL)) {
+        perror("pthread_join");
+        return EXIT_FAILURE;
+        }
+        if (pthread_join(verifthread, NULL)) {
+        perror("pthread_join");
+        return EXIT_FAILURE;
+        }
     }
-    pthread_t busthread,metrothread,verifthread;
-    sem_init(&evt1,0,0);
-    sem_init(&evt2,0,0);
-    sem_init(&evt3,0,0);
-    if(pthread_create(&busthread, NULL, threadbus,fl) == -1) {
-	perror("pthread_create");
-	return EXIT_FAILURE;
-    }
-    if(pthread_create(&metrothread, NULL, threadmetro,fl) == -1) {
-	perror("pthread_create");
-	return EXIT_FAILURE;
-    }
-    if(pthread_create(&verifthread, NULL, threadVerif,fl) == -1) {
-	perror("pthread_create");
-	return EXIT_FAILURE;
-    }
-    if (pthread_join(busthread, NULL)) {
-	perror("pthread_join");
-	return EXIT_FAILURE;
-    }
-    if (pthread_join(metrothread, NULL)) {
-	perror("pthread_join");
-	return EXIT_FAILURE;
-    }
-    if (pthread_join(verifthread, NULL)) {
-	perror("pthread_join");
-	return EXIT_FAILURE;
+    else
+    {
+
     }
     return 0;
 }

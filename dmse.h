@@ -12,7 +12,7 @@
 #define CAPMETRO 8
 #define BUS 1
 #define METRO 2
-
+#define TAILLE_MESSAGE 256
 typedef struct Passager Passager;
 struct Passager
 {
@@ -35,6 +35,7 @@ typedef struct FilePassager
 }FilePassager;
 
 sem_t evt1,evt2,evt3;
+char* nomTube;
 
 Passager* new_Passager(int id,int stationD,int stationA,int tpae,int transfert,int tpmax);
 void affichePassager(Passager* p);
@@ -42,7 +43,8 @@ FilePassager* new_FilePassager();
 void Passager_free(Passager *p);
 bool FilePassagerVide(FilePassager* fl);
 void addPassager(FilePassager* fp,Passager* p);
-void incrementTempsTransfert(FilePassager *fl);
+void ecrirePassager(Passager* p);
+void incrementTempsTransfert(FilePassager* fl);
 void afficheFilePassager(FilePassager* fl);
 void *threadbus(void *arg);
 void *threadmetro(void *arg);

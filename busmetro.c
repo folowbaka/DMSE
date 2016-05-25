@@ -50,7 +50,8 @@ void debarquement(Passager** ptransport,int typeTransport,int station,FilePassag
 }
 void embarquement(Passager** ptransport,int typeTransport,int station,FilePassager** fl)
 {
-    if(!FilePassagerVide(fl[station]))
+    bool transportplein=false;
+    while(!FilePassagerVide(fl[station]) && !transportplein)
     {
         int i=0;
         switch(typeTransport)
@@ -63,6 +64,7 @@ void embarquement(Passager** ptransport,int typeTransport,int station,FilePassag
                 if(i>=CAPBUS)
                 {
                     printf("Bus plein\n");
+                    transportplein=true;
                 }
                 else
                 {
@@ -78,6 +80,7 @@ void embarquement(Passager** ptransport,int typeTransport,int station,FilePassag
                 if(i>=CAPMETRO)
                 {
                     printf("Metro plein\n");
+                    transportplein=true;
                 }
                 else
                 {
@@ -88,6 +91,17 @@ void embarquement(Passager** ptransport,int typeTransport,int station,FilePassag
 
         }
     }
+}
+void ecrirePassager(Passager* p)
+{
+    int entreeTube;
+    if((entreeTube = open (nomTube, O_WRONLY)) == -1)
+	{
+		fprintf(stderr, "Impossible d'ouvrir l'entrée du tube nommé.\n");
+		exit(EXIT_FAILURE);
+	}
+    write(entreeTube,p,TAILLE_MESSAGE);
+
 }
 void *threadbus(void *fl)
 {
@@ -130,7 +144,8 @@ void *threadVerif(void *fl)
         printf("Tour vérif\n");
         for(i=0;i<NBFILE;i++)
         {
-            incrementTempsTransfert(fl[i]);
+            FilePassager** fp=fl;
+            incrementTempsTransfert(fp[i]);
         }
         sleep(2);
         sem_post(&evt1);

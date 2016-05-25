@@ -64,7 +64,7 @@ Passager* popPassager(FilePassager* fp)
             {
                 p=p->next;
             }
-            Passager* pr=fp->ptete;
+            pr=fp->ptete;
             fp->ptete=p;fp->ptete->next=NULL;
         }
         fp->tailleFIle--;
@@ -73,31 +73,37 @@ Passager* popPassager(FilePassager* fp)
 }
 Passager* popPassagerTaxi(FilePassager* fp,Passager* p)
 {
-      Passager* pr=NULL;
     if(!FilePassagerVide(fp))
     {
         if(fp->tailleFIle==1 && fp->pqueue==fp->ptete)
         {
-            pr=fp->pqueue;
             fp->pqueue=NULL;
             fp->ptete=NULL;
+        }
+        else if(p==fp->pqueue)
+        {
+            fp->pqueue=fp->pqueue->next;
         }
         else
         {
             Passager* ps=fp->pqueue;
-            while(p!=NULL && p->next!=p)
+            while(ps!=NULL && ps->next!=p)
             {
-                p=p->next;
+                ps=ps->next;
             }
-            Passager* pr=NULL;
-            fp->ptete=p;fp->ptete->next=NULL;
+            ps->next=p->next;
+            if(p==fp->ptete)
+            {
+                fp->ptete=ps;
+            }
+
         }
         fp->tailleFIle--;
     }
-    return pr;
+    return p;
 
 }
-void incrementTempsTransfert(FilePassager *fl)
+void incrementTempsTransfert(FilePassager* fl)
 {
          if(fl!=NULL)
     {
@@ -105,6 +111,12 @@ void incrementTempsTransfert(FilePassager *fl)
         while(actuel!=NULL)
         {
             actuel->tpae++;
+            if(actuel->tpae==actuel->tpmax)
+            {
+                printf("Temps d'attente maximal atteint\n");
+                Passager* p=popPassagerTaxi(fl,actuel);
+                ecrirePassager(p);
+            }
             actuel=actuel->next;
         }
 
