@@ -13,6 +13,7 @@
 #define BUS 1
 #define METRO 2
 #define TAILLE_MESSAGE 256
+
 typedef struct Passager Passager;
 struct Passager
 {
@@ -47,6 +48,7 @@ void Passager_free(Passager *p);
 bool FilePassagerVide(FilePassager* fl);
 void addPassager(FilePassager* fp,Passager* p);
 void ecrirePassager(Passager* p);
+Passager* popPassagerTaxi(FilePassager* fp,Passager* p);
 void incrementTempsTransfert(FilePassager* fl);
 void afficheFilePassager(FilePassager* fl);
 bool transportVide(Passager **ptransport,int typeTransport);

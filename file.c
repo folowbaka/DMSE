@@ -30,6 +30,7 @@ bool FilePassagerVide(FilePassager* fl)
 {
     return fl->tailleFIle==0;
 }
+//Ajoute un passager en bout de queue de la file
 void addPassager(FilePassager* fp,Passager* p)
 {
     if(fp!=NULL)
@@ -47,6 +48,7 @@ void addPassager(FilePassager* fp,Passager* p)
     }
 
 }
+//Retire un passager en bout de tête
 Passager* popPassager(FilePassager* fp)
 {
     Passager* pr=NULL;
@@ -72,6 +74,7 @@ Passager* popPassager(FilePassager* fp)
     }
     return pr;
 }
+//Retire le passager passé en paramètre de la file
 Passager* popPassagerTaxi(FilePassager* fp,Passager* p)
 {
     if(!FilePassagerVide(fp))
@@ -104,6 +107,7 @@ Passager* popPassagerTaxi(FilePassager* fp,Passager* p)
     return p;
 
 }
+//Incrémente le temps des passager et appelle un taxi si besoin
 void incrementTempsTransfert(FilePassager* fl)
 {
          if(fl!=NULL)
@@ -117,6 +121,7 @@ void incrementTempsTransfert(FilePassager* fl)
                 Passager* p=popPassagerTaxi(fl,actuel);
                 profit=profit+3;
                 nbPassager--;
+                printf("verificateur : transfert du passager{%d} vers un taxi\n",p->id);
                 ecrirePassager(p);
                 usleep(100);
             }

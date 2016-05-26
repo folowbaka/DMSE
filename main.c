@@ -2,6 +2,7 @@
 
 int main(int argc, const char * argv[])
 {
+    //Verification d'un fichier passé en argument
     if(argc<=1)
     {
         printf("Il manque les passagers!");
@@ -20,12 +21,14 @@ int main(int argc, const char * argv[])
     finProgramme=false;
     nomTube=(char*)malloc(sizeof("nepnep.fifo"));
     nomTube="nepnep.fifo";
+    //Création des files
     FilePassager **fl=(FilePassager**)malloc(NBFILE*sizeof(FilePassager*));
     int i;
     for(i=0;i<NBFILE;i++)
     {
         fl[i]=new_FilePassager();
     }
+    //Lecture du fichier contenant les passagers
     fscanf(passagers,"%d\n",&nbPassager);
     printf("Nombre de passager %d\n",nbPassager);
     while((fscanf(passagers,"# %d %d %d %d %d %d\n",&id,&stationd,&stationa,&temps,&transfert,&tempsmax))!=EOF)
@@ -48,11 +51,13 @@ int main(int argc, const char * argv[])
             addPassager(fl[8],p);
         }
     }
+    //Création du pipe nommé
     if (mkfifo((nomTube), S_IRWXU | S_IRGRP | S_IWGRP) == -1)
         {
         fprintf(stderr, "Erreur de création du tube\n");
-        //exit(EXIT_FAILURE);
+        exit(EXIT_FAILURE);
         }
+    //Création du processus fils
     pid=fork();
     if(pid>0)
     {
@@ -88,6 +93,13 @@ int main(int argc, const char * argv[])
         }
         kill(pid,SIGTERM);
         printf("Fin du programme, Profit : %d$\n",profit);
+        //Destruction du pipe nommé
+        unlink(nomTube);
+          for(i=0;i<NBFILE;i++)
+        {
+            free(fl[i]);
+        }
+        free(fl);
     }
     else
     {

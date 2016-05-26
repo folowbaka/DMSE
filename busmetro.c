@@ -114,16 +114,16 @@ void *threadbus(void *fl)
     Passager** pbus=(Passager**)malloc(CAPBUS*sizeof(Passager*));
     while(!finProgramme)
     {
+        //Teste si le bus et metro sont à la même station
         if(compteurbus==0 && compteurmetro==NBFILEBUS)
         {
+            //Mis en pause du bus en attendant que le metro finisse son tour
             sem_wait(&evt1);
         }
         printf(" ______________________\n|,----.,----.,----.,--.\\ \n||    ||    ||    ||   \\\\ \n|`----'`----'|----||----\\`. \n[            |   -||- __|(| \n[  ,--.      |____||.--.  |\n=-(( `))-----------(( `))==\n   `--'             `--'\n");
          printf("bus station : %d \n",compteurbus);
         debarquement(pbus,BUS,compteurbus,fl);
         embarquement(pbus,BUS,compteurbus,fl);
-        for(i=0;i<CAPBUS;i++)
-        affichePassager(pbus[i]);
         compteurbus=(compteurbus+1)%NBFILEBUS;
         sem_post(&evt3);
         sem_wait(&evt1);
@@ -132,7 +132,7 @@ void *threadbus(void *fl)
 }
 void *threadmetro(void *fl)
 {
-int i;
+
     compteurmetro=NBFILEBUS;
     Passager** pmetro=(Passager**)malloc(CAPMETRO*sizeof(Passager*));
     while(!finProgramme)
@@ -141,10 +141,10 @@ int i;
         printf("Metro station : %d \n",compteurmetro);
         debarquement(pmetro,METRO,compteurmetro,fl);
         embarquement(pmetro,METRO,compteurmetro,fl);
-        for(i=0;i<CAPMETRO;i++)
-        affichePassager(pmetro[i]);
+        //Teste si le bus et metro sont à la même station
         if(compteurbus==0 && compteurmetro==NBFILEBUS)
         {
+            //Passe son tour au bus
             sem_post(&evt1);
         }
         compteurmetro++;
@@ -162,20 +162,23 @@ void *threadVerif(void *fl)
     while(!finProgramme)
     {
         printf("Tour vérif\n");
+        //Incrémente le temps des passagers
         for(i=0;i<NBFILE;i++)
         {
             FilePassager** fp=fl;
             incrementTempsTransfert(fp[i]);
         }
-        printf("NBPASSAGER %d\n",nbPassager);
+        //Met fin aux threads et donc au programme lorsque tous les passager on débarqués ou prit un taxi
         if(nbPassager==0)
         {
+            printf("NBPASSAGER %d\n",nbPassager);
             finProgramme=true;
             sem_post(&evt1);
             sem_post(&evt2);
         }
         else
         {
+            printf("NBPASSAGER %d\n",nbPassager);
             sleep(2);
             sem_post(&evt1);
             sem_post(&evt2);
